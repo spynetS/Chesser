@@ -1,3 +1,10 @@
-gcc -o ./out/a.out ./src/render.c ./src/main.c
+gcc -o ./out/a.out ./src/msc.c ./src/render.c ./src/main.c
 
-./out/a.out
+if [ $# -eq 0 ]
+then
+    ./out/a.out
+else
+    ./out/a.out $1
+fi
+
+
