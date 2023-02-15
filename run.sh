@@ -1,1 +1,3 @@
-gcc render.c main.c ; ./a.out $1
+gcc -o ./out/a.out ./src/render.c ./src/main.c
+
+./out/a.out
