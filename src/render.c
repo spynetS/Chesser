@@ -68,27 +68,33 @@ int printP(char c){
     else return 0;
         
 }
-int printEmpty(char c,int* prev, int pos, int selected){
+void printEmpty(char c,int* prev, int pos, int selected){
     int len = (int)c - '0'; 
     for(int i = 0; i < len;i++){
+        if((*prev) == pos) printf(RED);
         printf(".");
+        printf("%s", "\x1b[0m");
+        (*prev)++;
     }
     return len;
 }
 void render(char* fen, int pos, int selected){
+    int index = 0;
     for(int i = 0; i < strlen(fen); i++){
         char c = fen[i];
 
-        if(i == pos) printf(RED);
-        if(i == selected) printf(YELLOW);
+        if(index == pos) printf(RED);
+        if(index == selected) printf(YELLOW);
 
         if(fen[i+1] == 'w' | (c == ' ' && fen[i+1] == 'b')) break;
         if(!printP(c)){
             if(c == '/') printf("\n");
             else {
-                printEmpty(c ,&i ,pos ,selected);
+                printEmpty(c ,&index ,pos ,selected);
+                index--;
             }
         }
+        index++;
         printf("%s", "\x1b[0m");
     }
 }
