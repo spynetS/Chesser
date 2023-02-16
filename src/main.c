@@ -13,15 +13,14 @@ int* cursor = &hover;
 int validMoves[10];
 
 char* parseFen(char* fen){
-    char* newFen = malloc(sizeof(char)*70);
+    char* newFen = malloc(sizeof(char)*80);
     int nfeni = 0;
     for(int i = 0; i < strlen(fen); i++){
         char c = fen[i];
-        int a = (int)c-'0';
-        if(a >= 0 && a < 9){
-            printf("%d", a);
-            for(int j = 0; j < a; j++){
-                newFen[i+j] = '0';
+        int a = (int)c - '0';
+        if(a > 0 && a < 9){
+            for(int j = 0;j < a; j++){
+                newFen[nfeni] = '0';
                 nfeni++;
             }
             continue;
@@ -31,12 +30,14 @@ char* parseFen(char* fen){
         }
         nfeni++;
     }
+    return newFen;
 }
 
 int main(int argc, char** argv){
     validMoves[0] = 20;
     if(argc > 1){
-        render(parseFen(argv[1]), *cursor, selected);
+        fen = parseFen(argv[1]);
+        render(fen, *cursor, selected);
     }
     else{
         while(1){
@@ -58,6 +59,7 @@ int main(int argc, char** argv){
         }
     }
 
+    free(fen);
     return 0;
 }
 
