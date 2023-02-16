@@ -93,7 +93,7 @@ void render(char* fen, int pos, int selected, int* validMoves){
         if(i == selected) printf(YELLOW);
         // render valid moves 
         for(int j = 0; j < sizeof(int)*100; j ++){
-            if(validMoves[j]!=NULL && validMoves[j] == i){
+            if(validMoves[j] == i){
                 printf(VALID);
             }
         }
