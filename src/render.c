@@ -61,17 +61,17 @@ int printP(char c){
         printf("♔");
         return 1;
     }
+    else if(c == 'z'){
+        printf("#");
+        return 1;
+    }
     else return 0;
         
 }
 int printEmpty(char c,int* prev, int pos, int selected){
-    printf("%s", "\x1b[0m");
     int len = (int)c - '0'; 
-    for(int i = 0; i<len;i++){
-        if(i == pos) printf(RED);
-        if(prev == selected) printf(YELLOW);
+    for(int i = 0; i < len;i++){
         printf(".");
-        printf("%s", "\x1b[0m");
     }
     return len;
 }
