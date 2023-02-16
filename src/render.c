@@ -11,8 +11,12 @@
 #define CYAN    "\x1b[36m"
 #define WHITE   "\x1b[37m"
 #define RESET   "\x1b[0m"
+#define SELECTED   "\x1b[44m"
+#define VALID   "\x1b[43m"
 
-int printP(char c){
+//prints the right char from the long fen
+int printP(char c, int i, int pos){
+    printf(RED);
     if(c == 'r'){
         printf("♜");
         return 1;
@@ -66,30 +70,43 @@ int printP(char c){
         return 1;
     }
     else if(c == '0'){
-        printf(".");
+        printf(" "); 
         return 0;
     }
     else return 0;
         
 }
 
-void render(char* fen, int pos, int selected){
+void render(char* fen, int pos, int selected, int* validMoves){
 
-    int index = 0; // position on board
     for(int i = 0; i < strlen(fen); i++){
         char c = fen[i];
+        //draws the black and white board 
+        if(i % 2 == 0){
+            printf("\x1b[40m");
+        }
+        else{
+            printf("\x1b[47m");
+        }
+        // draws the cursor and the selected piece
+        if(i == pos) printf(SELECTED);
+        if(i == selected) printf(YELLOW);
+        // render valid moves 
+        for(int j = 0; j < sizeof(int)*100; j ++){
+            if(validMoves[j]!=NULL && validMoves[j] == i){
+                printf(VALID);
+            }
+        }
 
-        if(index == pos) printf(RED);
-        if(index == selected) printf(YELLOW);
-
+        // we break the render loop when we fins w and ' ' and b in the next char
         if(fen[i+1] == 'w' | (c == ' ' && fen[i+1] == 'b')) break;
-        if(!printP(c)){
+        // render pieces
+        if(!printP(c,i, pos)){
             if(c == '/') {
                 printf("\n");
             }
         }
-        index++;
         printf(RESET);
     }
-    printf("%d", pos);
+        printf(RESET);
 }
