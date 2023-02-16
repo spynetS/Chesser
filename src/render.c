@@ -65,21 +65,17 @@ int printP(char c){
         printf("#");
         return 1;
     }
+    else if(c == '0'){
+        printf(".");
+        return 0;
+    }
     else return 0;
         
 }
-void printEmpty(char c,int* prev, int pos, int selected){
-    int len = (int)c - '0'; 
-    for(int i = 0; i < len;i++){
-        if((*prev) == pos) printf(RED);
-        printf(".");
-        printf("%s", "\x1b[0m");
-        (*prev)++;
-    }
-    return len;
-}
+
 void render(char* fen, int pos, int selected){
-    int index = 0;
+
+    int index = 0; // position on board
     for(int i = 0; i < strlen(fen); i++){
         char c = fen[i];
 
@@ -88,13 +84,12 @@ void render(char* fen, int pos, int selected){
 
         if(fen[i+1] == 'w' | (c == ' ' && fen[i+1] == 'b')) break;
         if(!printP(c)){
-            if(c == '/') printf("\n");
-            else {
-                printEmpty(c ,&index ,pos ,selected);
-                index--;
+            if(c == '/') {
+                printf("\n");
             }
         }
         index++;
-        printf("%s", "\x1b[0m");
+        printf(RESET);
     }
+    printf("%d", pos);
 }
