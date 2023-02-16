@@ -33,11 +33,39 @@ char* parseFen(char* fen){
     return newFen;
 }
 
+char* getFen(char* longfen){
+    char* newFen = malloc(sizeof(char)*80);
+    int nfeni = 0;
+    int index = 0;
+    for(int i = 0; i < strlen(longfen); i++){
+        char c = longfen[i];
+        if(c == '0'){
+            index++;
+            continue;
+        }
+        else{
+            if(index > 0){
+                newFen[nfeni] = index+'0';
+                index=0;
+                i--;
+            }
+            else{
+                newFen[nfeni] = fen[i];
+            }
+        }
+        nfeni++;
+    }
+    return newFen;
+
+}
+
 int main(int argc, char** argv){
     validMoves[0] = 20;
     if(argc > 1){
+        printf("%s\n", argv[1]);
         fen = parseFen(argv[1]);
-        render(fen, *cursor, selected);
+        printf("%s\n", fen);
+        printf("%s\n", getFen(fen));
     }
     else{
         while(1){
