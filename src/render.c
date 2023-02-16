@@ -86,7 +86,6 @@ void render(char* fen, int pos, int selected){
         if(!printP(c)){
             if(c == '/') {
                 printf("\n");
-                continue;
             }
         }
         index++;

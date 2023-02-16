@@ -4,13 +4,11 @@
 #include "render.h"
 #include "msc.h"
 
-char* fen = "rnbqkbnr/pppppppp/00000000/00000000/00000000/00000z00/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-/* char* fen = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"; */
+char fen[] = "rnbqkbnr/pppppppp/00000000/00000000/00000000/00000000/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 int hover = 0;
-int selected = 0;
+int selected = 100;
 int* cursor = &hover;
-int validMoves[10];
 
 char* parseFen(char* fen){
     char* newFen = malloc(sizeof(char)*80);
@@ -59,11 +57,32 @@ char* getFen(char* longfen){
 
 }
 
+void setPiece(int index, char v){
+    int ii = 0;
+    for(int i = 0; i < strlen(fen); i++){
+        if(index == ii) fen[i] = v;
+        ii++;
+    }
+}
+char getPiece(int index){
+    int ii = 0;
+    for(int i = 0; i < strlen(fen); i++){
+        if(index == ii) return fen[i];
+        ii++;
+    }
+    return '0';
+}
+
+void setValidMoves(int index){
+    for(int i = 0; i < strlen(fen); i++){
+        if(index+9 == i) fen[i] = 'z'; 
+    }
+}
+
 int main(int argc, char** argv){
-    validMoves[0] = 20;
     if(argc > 1){
         printf("%s\n", argv[1]);
-        fen = parseFen(argv[1]);
+        strcpy(fen, parseFen(argv[1]));
         printf("%s\n", fen);
         printf("%s\n", getFen(fen));
     }
@@ -75,19 +94,31 @@ int main(int argc, char** argv){
                 char c = getchar();
                 if(c == 'd' ) (*cursor)++;
                 if(c == 'a' ) (*cursor)--;
-                if(c == 's' ) (*cursor)+=8;
-                if(c == 'w' ) (*cursor)-=8;
+                if(c == 's' ) (*cursor)+=9;
+                if(c == 'w' ) (*cursor)-=9;
                 if(c == '\n') {
-
-                    selected = *cursor;
+                    if(selected == 100){
+                        selected = *cursor;
+                        setValidMoves(selected);
+                    }
+                    else if (getPiece(*cursor)=='z'){
+                        setPiece(*cursor,getPiece(selected));
+                        setPiece(selected,'0');
+                        selected = 100;
+                    }
+                }
+                if(c == 'q'){
+                    system("clear");
+                    printf("%s\n",fen);
+                    printf("%s\n",getFen(fen));
+                    return 0;
                 }
             }
             render(fen, *cursor, selected);
             printf("\n");
         }
     }
-
-    free(fen);
+    
     return 0;
 }
 
