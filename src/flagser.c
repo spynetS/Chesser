@@ -100,7 +100,8 @@ void parse(int argc, char** argv){
         }
     }
     //run last arg
-    flags[lastarg].oncall(argsindex, args);
+    if(argc > 1)
+        flags[lastarg].oncall(argsindex, args);
     //maybe free every string inside args?
 }
 
