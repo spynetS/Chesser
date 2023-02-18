@@ -55,7 +55,7 @@ void renderFen(int argc, char** args){
 
 void runChess(){
     while(1){
-        msleep(50);
+        msleep(100);
         // decrease time
         if(getTurn() == 'w'){
             timew --;
