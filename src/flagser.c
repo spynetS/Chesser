@@ -60,8 +60,8 @@ void print(int argc, char** args){
 }
 
 #define LISTEN 1
-
-void parse(int argc, char** argv){
+//returns amount of flags found
+int parse(int argc, char** argv){
     // after first is 1
     int state = 0;
     // the args we pass to the lambda functions
@@ -69,6 +69,8 @@ void parse(int argc, char** argv){
     char** args = malloc(sizeof(char)*300);
     //last arg is to when we have checked all args we call the last with its args 
     int lastarg = 1;
+        
+    int flagsFound = 0;
 
     for(int i = 0; i < argc; i++){
         for(int j = 0; j < flaglength; j++){
@@ -80,6 +82,8 @@ void parse(int argc, char** argv){
                     flags[lastarg].oncall(argsindex, args);
 
                 lastarg = j;
+
+                flagsFound++;
                 //reset args
                 argsindex = 0;
                 //set so we can begin to listen to args for it
@@ -100,9 +104,10 @@ void parse(int argc, char** argv){
         }
     }
     //run last arg
-    if(argc > 1)
+    if(flagsFound > 0)
         flags[lastarg].oncall(argsindex, args);
     //maybe free every string inside args?
+    return flagsFound;
 }
 
 void addHelp(){

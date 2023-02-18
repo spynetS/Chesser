@@ -102,16 +102,11 @@ void setValidMoves(int index){
 
 void renderFen(int argc, char** args){
 
-    printf("%s", args[1]);
     render(parseFen(args[1]),0,0,validMoves);
 }
 
-int main(int argc, char** argv){
-    addFlag("-r", "--render", "will render a fen", renderFen);
-    addHelp();
-    parse(argc, argv);
-
-    while(0){
+void runChess(){
+    while(1){
         msleep(50);
         system("clear");
         if(kbhit()){
@@ -140,13 +135,22 @@ int main(int argc, char** argv){
                 system("clear");
                 printf("%s\n",fen);
                 printf("%s\n",getFen(fen));
-                return 0;
+                break;
             }
         }
         render(fen, *cursor, selected, validMoves);
         printf("\n");
     }
-    
+}
+
+
+int main(int argc, char** argv){
+    addFlag("-r", "--render", "will render a fen", renderFen);
+    addHelp();
+
+    int flagsFound = parse(argc, argv);
+    if(flagsFound == 0) runChess();
+
     return 0;
 }
 

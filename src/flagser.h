@@ -22,7 +22,7 @@
 
 void addFlag(char* name, char* longname, char* description, void *oncall);
 void addHelp();
-void parse(int argc, char** argv);
+int  parse(int argc, char** argv);
 void printHelp(int argc, char** args);
 
 
