@@ -89,17 +89,16 @@ void render(char* fen, int pos, int selected, int* validMoves){
         else{
             printf("\x1b[47m");
         }
-        // draws the cursor and the selected piece
-        if(i == pos) printf(SELECTED);
-        if(i == selected) printf(YELLOW);
-
-
         // render valid moves 
         for(int j = 0; j < 100; j ++){
             if(validMoves[j] == i){
                 printf(VALID);
             }
         }
+        // draws the cursor and the selected piece
+        if(i == pos) printf(SELECTED);
+        if(i == selected) printf(YELLOW);
+
         // we break the render loop when we fins w and ' ' and b in the next char
         if(fen[i+1] == 'w' | (c == ' ' && fen[i+1] == 'b')) break;
         // render pieces
