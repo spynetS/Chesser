@@ -5,18 +5,13 @@
 #include "msc.h"
 #include "flagser.h"
 #include "board.h"
-#include<ctype.h>
 
 int hover = 66;
 int selected = 100;
 int* cursor = &hover;
 
-int timew = 100;
-int timeb = 100;
-
-int isWhite(int index){
-    return isupper(getPiece(index));
-}
+int timew = 1000;
+int timeb = 1000;
 
 // calculates the moves that are legal and add them to the calidMoves array
 void setValidMoves(int index){
@@ -55,12 +50,30 @@ void setValidMoves(int index){
 }
 
 void renderFen(int argc, char** args){
-    render(parseFen(args[1]),0,0,validMoves);
+    render(parseFen(args[1]),0,0,validMoves, timew, timeb);
 }
 
 void runChess(){
     while(1){
         msleep(50);
+        // decrease time
+        if(getTurn() == 'w'){
+            timew --;
+        }else{
+            timeb --;
+        }
+
+        if(timew <= 0){
+            system("clear");
+            printf("Black won on time");
+            break;
+        }
+        if(timeb <= 0){
+            system("clear");
+            printf("White won on time");
+            break;
+        }
+
         system("clear");
         if(kbhit()){
             char c = getchar();
@@ -69,19 +82,28 @@ void runChess(){
             if(c == 's' ) (*cursor)+=9;
             if(c == 'w' ) (*cursor)-=9;
             if(c == '\n') {
-                if(selected == 100){
+                if(selected == 100 && getColor(*cursor) == getTurn()){
                     selected = *cursor;
                     setValidMoves(selected);
                 }
                 //move selected piece
                 else if (pieceInValid(*cursor)){
                     setPiece(*cursor,getPiece(selected));
-                    validMoves[0] = 0;
+
                     setPiece(selected,'0');
                     selected = 100;
+
                     clearValidMoves();
+
+                    // mv cursor to oponents side
+                    if(getTurn()=='w')
+                        hover = 12;
+                    else
+                        hover = 57;
+
+                    changeTurn();
                 }
-                else{
+                else if(getColor(*cursor) == getTurn()){
                     clearValidMoves();
                     selected = *cursor;
                     setValidMoves(selected);
@@ -94,11 +116,10 @@ void runChess(){
                 break;
             }
         }
-        render(fen, *cursor, selected, validMoves);
+        render(fen, *cursor, selected, validMoves, timew, timeb);
         printf("\n");
     }
 }
-
 
 int main(int argc, char** argv){
     addFlag("-r", "--render", "will render a fen", renderFen);
