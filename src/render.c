@@ -87,7 +87,7 @@ void drawBg(int i){
         printf("\x1b[47m");
     }
 }
-void render(char* fen, int pos, int selected, int* validMoves){
+void render(char* fen, int pos, int selected, int* validMoves, int t1, int t2){
     for(int i = 0; i < strlen(fen); i++){
         char c = fen[i];
 
@@ -111,9 +111,9 @@ void render(char* fen, int pos, int selected, int* validMoves){
                 if(i == 8)
                     printf("%cs turn",getTurn());
                 if(i == 17)
-                    printf("Whites time: %d",10);
+                    printf("Whites time: %d", t1);
                 if(i == 26)
-                    printf("Blacks time: %d",10);
+                    printf("Blacks time: %d", t2);
 
                 printf("\n");
             }

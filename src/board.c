@@ -22,9 +22,12 @@ void changeTurn(){
     for(int i = 0; i < strlen(fen); i++){
         char c = fen[i];
         if(c == ' '){
-            printf("change");
-            if(fen[i+1] == 'w') fen[i+1] = 'b';
-            if(fen[i+1] == 'b') fen[i+1] = 'w';
+            if(fen[i+1] == 'w'){
+                fen[i+1] = 'b';
+            }
+            else if(fen[i+1] == 'b'){
+                fen[i+1] = 'w';
+            }
             break;
         }
     }

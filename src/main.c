@@ -10,9 +10,8 @@ int hover = 66;
 int selected = 100;
 int* cursor = &hover;
 
-int timew = 100;
-int timeb = 100;
-
+int timew = 1000;
+int timeb = 1000;
 
 // calculates the moves that are legal and add them to the calidMoves array
 void setValidMoves(int index){
@@ -51,12 +50,30 @@ void setValidMoves(int index){
 }
 
 void renderFen(int argc, char** args){
-    render(parseFen(args[1]),0,0,validMoves);
+    render(parseFen(args[1]),0,0,validMoves, timew, timeb);
 }
 
 void runChess(){
     while(1){
         msleep(50);
+        // decrease time
+        if(getTurn() == 'w'){
+            timew --;
+        }else{
+            timeb --;
+        }
+
+        if(timew <= 0){
+            system("clear");
+            printf("Black won on time");
+            break;
+        }
+        if(timeb <= 0){
+            system("clear");
+            printf("White won on time");
+            break;
+        }
+
         system("clear");
         if(kbhit()){
             char c = getchar();
@@ -78,8 +95,13 @@ void runChess(){
 
                     clearValidMoves();
 
+                    // mv cursor to oponents side
+                    if(getTurn()=='w')
+                        hover = 12;
+                    else
+                        hover = 57;
+
                     changeTurn();
-                    msleep(1000);
                 }
                 else if(getColor(*cursor) == getTurn()){
                     clearValidMoves();
@@ -94,11 +116,10 @@ void runChess(){
                 break;
             }
         }
-        render(fen, *cursor, selected, validMoves);
+        render(fen, *cursor, selected, validMoves, timew, timeb);
         printf("\n");
     }
 }
-
 
 int main(int argc, char** argv){
     addFlag("-r", "--render", "will render a fen", renderFen);
