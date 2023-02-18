@@ -5,6 +5,12 @@ extern int validMoves[100];
 
 char getTurn();
 
+char getColor(int index);
+
+int isWhite(int index);
+
+void changeTurn();
+
 void addValidMove(int index);
 
 void clearValidMoves();

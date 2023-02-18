@@ -5,7 +5,6 @@
 #include "msc.h"
 #include "flagser.h"
 #include "board.h"
-#include<ctype.h>
 
 int hover = 66;
 int selected = 100;
@@ -14,9 +13,6 @@ int* cursor = &hover;
 int timew = 100;
 int timeb = 100;
 
-int isWhite(int index){
-    return isupper(getPiece(index));
-}
 
 // calculates the moves that are legal and add them to the calidMoves array
 void setValidMoves(int index){
@@ -69,19 +65,23 @@ void runChess(){
             if(c == 's' ) (*cursor)+=9;
             if(c == 'w' ) (*cursor)-=9;
             if(c == '\n') {
-                if(selected == 100){
+                if(selected == 100 && getColor(*cursor) == getTurn()){
                     selected = *cursor;
                     setValidMoves(selected);
                 }
                 //move selected piece
                 else if (pieceInValid(*cursor)){
                     setPiece(*cursor,getPiece(selected));
-                    validMoves[0] = 0;
+
                     setPiece(selected,'0');
                     selected = 100;
+
                     clearValidMoves();
+
+                    changeTurn();
+                    msleep(1000);
                 }
-                else{
+                else if(getColor(*cursor) == getTurn()){
                     clearValidMoves();
                     selected = *cursor;
                     setValidMoves(selected);
