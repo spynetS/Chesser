@@ -16,7 +16,7 @@
 
 //prints the right char from the long fen
 int printP(char c, int i, int pos){
-    printf(RED);
+    printf(BLACK);
     if(c == 'r'){
         printf("♜");
         return 1;
@@ -83,7 +83,7 @@ void render(char* fen, int pos, int selected, int* validMoves){
         char c = fen[i];
         //draws the black and white board 
         if(i % 2 == 0){
-            printf("\x1b[40m");
+            printf("\x1b[42m");
         }
         else{
             printf("\x1b[47m");
