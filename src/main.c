@@ -7,7 +7,7 @@
 #include "board.h"
 #include<ctype.h>
 
-int hover = 0;
+int hover = 66;
 int selected = 100;
 int* cursor = &hover;
 
@@ -29,6 +29,24 @@ void setValidMoves(int index){
             if(index-9  == i && getPiece(i) == '0') addValidMove(i);
             if(index-8  == i && getPiece(i) != '0' && !isWhite(i)) addValidMove(i);
             if(index-10 == i && getPiece(i) != '0' && !isWhite(i)) addValidMove(i);
+        }
+        if(p == 'Q'){
+            if(i == index){
+                for(int j = 1; j < 10 ; j++){
+                    int pos = i-(9*j);
+                    if(getPiece(pos) != '0'){
+                        break;
+                    }
+                    addValidMove(pos);
+                }
+                for(int j = 1; j < 10 ; j++){
+                    int pos = i+(9*j);
+                    addValidMove(pos);
+                    if(getPiece(pos) != '0'){
+                        break;
+                    }
+                }
+            }
         }
     }
 }
