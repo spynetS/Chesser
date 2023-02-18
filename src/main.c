@@ -11,6 +11,9 @@ int hover = 66;
 int selected = 100;
 int* cursor = &hover;
 
+int timew = 100;
+int timeb = 100;
+
 int isWhite(int index){
     return isupper(getPiece(index));
 }

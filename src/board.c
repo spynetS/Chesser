@@ -8,6 +8,19 @@ char fen[] = "rnbqkbnr/pppppppp/00000000/00000000/00000000/00000000/PPPPPPPP/RNB
 int validMoves[100];
 int validMoveIndex = 0;
 
+char getTurn(){
+    for(int i = 0; i < strlen(fen); i++){
+        char c = fen[i];
+        if(c == ' '){
+            return fen[i+1];
+        }
+    }
+    return 'w';
+}
+char getColor(int index){
+    if(isWhite(index)) return 'w';
+    return 'b';
+}
 void addValidMove(int index){
     validMoves[validMoveIndex] = index;
     validMoveIndex++;

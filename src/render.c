@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "board.h"
 
 #define BLACK    "\x1b[30m"
 #define RED      "\x1b[31m"
@@ -77,18 +78,21 @@ int printP(char c, int i, int pos){
     else return 0;
         
 }
-
+void drawBg(int i){
+    //draws the black and white board 
+    if(i % 2 != 0){
+        printf("\x1b[42m");
+    }
+    else{
+        printf("\x1b[47m");
+    }
+}
 void render(char* fen, int pos, int selected, int* validMoves){
     for(int i = 0; i < strlen(fen); i++){
-        printf(BOLD);
         char c = fen[i];
-        //draws the black and white board 
-        if(i % 2 != 0){
-            printf("\x1b[42m");
-        }
-        else{
-            printf("\x1b[47m");
-        }
+
+        printf(BOLD);
+        drawBg(i);
         // render valid moves 
         for(int j = 0; j < 100; j ++){
             if(validMoves[j] == i){
@@ -104,6 +108,13 @@ void render(char* fen, int pos, int selected, int* validMoves){
         // render pieces
         if(!printP(c,i, pos)){
             if(c == '/') {
+                if(i == 8)
+                    printf("%cs turn",getTurn());
+                if(i == 17)
+                    printf("Whites time: %d",10);
+                if(i == 26)
+                    printf("Blacks time: %d",10);
+
                 printf("\n");
             }
         }
@@ -111,8 +122,6 @@ void render(char* fen, int pos, int selected, int* validMoves){
             // to make the chars squares 
             printf(" ");
         }
-
-
         printf(RESET);
     }
         printf(RESET);

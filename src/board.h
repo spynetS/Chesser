@@ -3,6 +3,8 @@ extern char fen[100];//= "rnbqkbnr/pppppppp/00000000/00000000/00000000/00000000/
 
 extern int validMoves[100];
 
+char getTurn();
+
 void addValidMove(int index);
 
 void clearValidMoves();
