@@ -3,6 +3,7 @@
 #include <string.h>
 #include "render.h"
 #include "msc.h"
+#include "flagser.h"
 
 // a long fen is a fen with all the positions occupues (empy place is 0)
 
@@ -16,7 +17,7 @@ int validMoves[100];
 //returns 1 if the argument index is inside the valid moves list
 int pieceInValid(int index){
     for(int i = 0; i < 100; i++){
-        if(validMoves[i] !=NULL && index == validMoves[i]){
+        if(index == validMoves[i]){
             return 1;
         }
     }
@@ -99,51 +100,57 @@ void setValidMoves(int index){
     }
 }
 
-int main(int argc, char** argv){
-    if(argc > 1){
-        printf("%s\n", argv[1]);
-        strcpy(fen, parseFen(argv[1]));
-        printf("%s\n", fen);
-        printf("%s\n", getFen(fen));
-    }
-    else{
-        while(1){
-            msleep(50);
-            system("clear");
-            if(kbhit()){
-                char c = getchar();
-                if(c == 'd' ) (*cursor)++;
-                if(c == 'a' ) (*cursor)--;
-                if(c == 's' ) (*cursor)+=9;
-                if(c == 'w' ) (*cursor)-=9;
-                if(c == '\n') {
-                    if(selected == 100){
-                        selected = *cursor;
-                        setValidMoves(selected);
-                    }
-                    else if (pieceInValid(*cursor)){
-                        setPiece(*cursor,getPiece(selected));
-                        validMoves[0] = NULL;
-                        setPiece(selected,'0');
-                        selected = 100;
-                    }
-                    else{
-                        selected = *cursor;
-                        setValidMoves(selected);
-                    }
+void renderFen(int argc, char** args){
+
+    render(parseFen(args[1]),0,0,validMoves);
+}
+
+void runChess(){
+    while(1){
+        msleep(50);
+        system("clear");
+        if(kbhit()){
+            char c = getchar();
+            if(c == 'd' ) (*cursor)++;
+            if(c == 'a' ) (*cursor)--;
+            if(c == 's' ) (*cursor)+=9;
+            if(c == 'w' ) (*cursor)-=9;
+            if(c == '\n') {
+                if(selected == 100){
+                    selected = *cursor;
+                    setValidMoves(selected);
                 }
-                if(c == 'q'){
-                    system("clear");
-                    printf("%s\n",fen);
-                    printf("%s\n",getFen(fen));
-                    return 0;
+                else if (pieceInValid(*cursor)){
+                    setPiece(*cursor,getPiece(selected));
+                    validMoves[0] = 0;
+                    setPiece(selected,'0');
+                    selected = 100;
+                }
+                else{
+                    selected = *cursor;
+                    setValidMoves(selected);
                 }
             }
-            render(fen, *cursor, selected, validMoves);
-            printf("\n");
+            if(c == 'q'){
+                system("clear");
+                printf("%s\n",fen);
+                printf("%s\n",getFen(fen));
+                break;
+            }
         }
+        render(fen, *cursor, selected, validMoves);
+        printf("\n");
     }
-    
+}
+
+
+int main(int argc, char** argv){
+    addFlag("-r", "--render", "will render a fen", renderFen);
+    addHelp();
+
+    int flagsFound = parse(argc, argv);
+    if(flagsFound == 0) runChess();
+
     return 0;
 }
 
