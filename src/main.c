@@ -5,20 +5,30 @@
 #include "msc.h"
 #include "flagser.h"
 #include "board.h"
+#include<ctype.h>
 
 int hover = 0;
 int selected = 100;
 int* cursor = &hover;
+
+int isWhite(int index){
+    return isupper(getPiece(index));
+}
 
 // calculates the moves that are legal and add them to the calidMoves array
 void setValidMoves(int index){
     char p = getPiece(index);
     for(int i = 0; i < strlen(fen); i++){
         if(p == 'p'){
-            if(index+9 == i) validMoves[0] = i;
+            if(index+9  == i && getPiece(i) == '0') addValidMove(i);
+            // and that pos is not empty and it is not our color
+            if(index+8  == i && getPiece(i) != '0' && isWhite(i)) addValidMove(i);
+            if(index+10 == i && getPiece(i) != '0' && isWhite(i)) addValidMove(i);
         }
         if(p == 'P'){
-            if(index-9 == i && getPiece(i)!='p') validMoves[0] = i;
+            if(index-9  == i && getPiece(i) == '0') addValidMove(i);
+            if(index-8  == i && getPiece(i) != '0' && !isWhite(i)) addValidMove(i);
+            if(index-10 == i && getPiece(i) != '0' && !isWhite(i)) addValidMove(i);
         }
     }
 }
@@ -42,13 +52,16 @@ void runChess(){
                     selected = *cursor;
                     setValidMoves(selected);
                 }
+                //move selected piece
                 else if (pieceInValid(*cursor)){
                     setPiece(*cursor,getPiece(selected));
                     validMoves[0] = 0;
                     setPiece(selected,'0');
                     selected = 100;
+                    clearValidMoves();
                 }
                 else{
+                    clearValidMoves();
                     selected = *cursor;
                     setValidMoves(selected);
                 }

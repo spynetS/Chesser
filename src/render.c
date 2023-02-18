@@ -2,17 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define BLACK   "\x1b[30m"
-#define RED     "\x1b[31m"
-#define GREEN   "\x1b[32m"
-#define YELLOW  "\x1b[33m"
-#define BLUE    "\x1b[34m"
-#define MAGENTA "\x1b[35m"
-#define CYAN    "\x1b[36m"
-#define WHITE   "\x1b[37m"
-#define RESET   "\x1b[0m"
-#define SELECTED   "\x1b[44m"
-#define VALID   "\x1b[43m"
+#define BLACK    "\x1b[30m"
+#define RED      "\x1b[31m"
+#define GREEN    "\x1b[32m"
+#define YELLOW   "\x1b[33m"
+#define BLUE     "\x1b[34m"
+#define MAGENTA  "\x1b[35m"
+#define CYAN     "\x1b[36m"
+#define WHITE    "\x1b[37m"
+#define RESET    "\x1b[0m"
+#define SELECTED "\x1b[44m"
+#define VALID    "\x1b[43m"
+#define BOLD     "\033[1m"
 
 //prints the right char from the long fen
 int printP(char c, int i, int pos){
@@ -70,7 +71,7 @@ int printP(char c, int i, int pos){
         return 1;
     }
     else if(c == '0'){
-        printf(" "); 
+        printf("  "); 
         return 0;
     }
     else return 0;
@@ -78,11 +79,11 @@ int printP(char c, int i, int pos){
 }
 
 void render(char* fen, int pos, int selected, int* validMoves){
-
     for(int i = 0; i < strlen(fen); i++){
+        printf(BOLD);
         char c = fen[i];
         //draws the black and white board 
-        if(i % 2 == 0){
+        if(i % 2 != 0){
             printf("\x1b[42m");
         }
         else{
@@ -91,13 +92,14 @@ void render(char* fen, int pos, int selected, int* validMoves){
         // draws the cursor and the selected piece
         if(i == pos) printf(SELECTED);
         if(i == selected) printf(YELLOW);
+
+
         // render valid moves 
-        for(int j = 0; j < sizeof(int)*100; j ++){
+        for(int j = 0; j < 100; j ++){
             if(validMoves[j] == i){
                 printf(VALID);
             }
         }
-
         // we break the render loop when we fins w and ' ' and b in the next char
         if(fen[i+1] == 'w' | (c == ' ' && fen[i+1] == 'b')) break;
         // render pieces
@@ -106,6 +108,12 @@ void render(char* fen, int pos, int selected, int* validMoves){
                 printf("\n");
             }
         }
+        else{
+            // to make the chars squares 
+            printf(" ");
+        }
+
+
         printf(RESET);
     }
         printf(RESET);

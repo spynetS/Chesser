@@ -6,7 +6,18 @@
 
 char fen[] = "rnbqkbnr/pppppppp/00000000/00000000/00000000/00000000/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 int validMoves[100];
+int validMoveIndex = 0;
 
+void addValidMove(int index){
+    validMoves[validMoveIndex] = index;
+    validMoveIndex++;
+}
+void clearValidMoves(){
+    for(int i = 0; i < validMoveIndex; i++){
+        validMoves[i] = 100;
+    }
+    validMoveIndex = 0;
+}
 //returns 1 if the argument index is inside the valid moves list
 int pieceInValid(int index){
     for(int i = 0; i < 100; i++){
