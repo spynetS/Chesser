@@ -109,11 +109,11 @@ void render(char* fen, int pos, int selected, int* validMoves, int t1, int t2){
         if(!printP(c,i, pos)){
             if(c == '/') {
                 if(i == 8)
-                    printf("%cs turn",getTurn());
+                    printf("%c's turn",getTurn());
                 if(i == 17)
-                    printf("Whites time: %d", t1);
+                    printf("White's time: %d", t1);
                 if(i == 26)
-                    printf("Blacks time: %d", t2);
+                    printf("Black's time: %d", t2);
 
                 printf("\n");
             }
