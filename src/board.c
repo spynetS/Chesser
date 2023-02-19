@@ -9,6 +9,48 @@ char fen[] = "rnbqkbnr/pppppppp/00000000/00000000/00000000/00000000/PPPPPPPP/RNB
 int validMoves[100];
 int validMoveIndex = 0;
 
+int hover = 66;
+int selected = 100;
+//
+// calculates the moves that are legal and add them to the calidMoves array
+void setValidMoves(int index){
+    char p = getPiece(index);
+    for(int i = 0; i < strlen(fen); i++){
+        if(p == 'p'){
+            if(index+9  == i && getPiece(i) == '0') addValidMove(i);
+            // and that pos is not empty and it is not our color
+            if(index+8  == i && getPiece(i) != '0' && isWhite(i)) addValidMove(i);
+            if(index+10 == i && getPiece(i) != '0' && isWhite(i)) addValidMove(i);
+        }
+        if(p == 'P'){
+            if(index-9  == i && getPiece(i) == '0') addValidMove(i);
+            if(index-8  == i && getPiece(i) != '0' && !isWhite(i)) addValidMove(i);
+            if(index-10 == i && getPiece(i) != '0' && !isWhite(i)) addValidMove(i);
+        }
+    }
+}
+
+void setSelected(int index){
+    selected = index;
+    setValidMoves(index);
+}
+
+void move(int from, int to){
+    setPiece(to,getPiece(from));
+
+    setPiece(from,'0');
+    clearValidMoves();
+
+    // mv cursor to oponents side
+    if(getTurn()=='w'){
+        hover = 12;
+    }
+    else
+        hover = 57;
+
+    changeTurn();
+}
+
 char getTurn(){
     for(int i = 0; i < strlen(fen); i++){
         char c = fen[i];
@@ -18,6 +60,12 @@ char getTurn(){
     }
     return 'w';
 }
+
+void setFen(char* newFen){
+    memset(fen, 0, sizeof(char)+strlen(newFen));
+    strcpy(fen, newFen);
+}
+
 void changeTurn(){
     for(int i = 0; i < strlen(fen); i++){
         char c = fen[i];
@@ -45,7 +93,7 @@ void addValidMove(int index){
     validMoveIndex++;
 }
 void clearValidMoves(){
-    for(int i = 0; i < validMoveIndex; i++){
+    for(int i = 0; i < 100; i++){
         validMoves[i] = 100;
     }
     validMoveIndex = 0;
@@ -66,7 +114,6 @@ void setPiece(int index, char v){
 char getPiece(int index){
     return fen[index];
 }
-
 
 // returns a long fen from a fen
 char* parseFen(char* fen){

@@ -3,11 +3,20 @@ extern char fen[100];//= "rnbqkbnr/pppppppp/00000000/00000000/00000000/00000000/
 
 extern int validMoves[100];
 
+extern int hover;
+extern int selected;
+
+void setValidMoves(int index);
+void setSelected(int index);
+void move(int from, int to);
+
 char getTurn();
 
 char getColor(int index);
 
 int isWhite(int index);
+
+void setFen(char* newFen);
 
 void changeTurn();
 
