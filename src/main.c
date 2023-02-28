@@ -65,7 +65,6 @@ void runChess(){
                 //move selected piece
                 else if (pieceInValid(hover)){
                     move(selected, hover);
-                    makeMove();
                 }
                 else if(getColor(hover) == getTurn()){
                     clearValidMoves();

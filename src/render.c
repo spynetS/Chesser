@@ -114,6 +114,10 @@ void render(char* fen, int pos, int selected, int* validMoves, int t1, int t2){
                     printf("White's time: %d", t1);
                 if(i == 26)
                     printf("Black's time: %d", t2);
+                if(i == 26+9)
+                    printf(" %d", pos/9);
+                if(i == 26+18)
+                    printf(" %d", pos-(9*(pos/9)));
 
                 printf("\n");
             }

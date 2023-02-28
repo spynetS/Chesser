@@ -11,14 +11,20 @@ int validMoveIndex = 0;
 
 int hover = 66;
 int selected = 100;
-//
+
+int row(int index){
+    return index/9;
+}
+int column(int index){
+    return index-(9*(row(index)));
+}
+
 // calculates the moves that are legal and add them to the calidMoves array
 void setValidMoves(int index){
     char p = getPiece(index);
     for(int i = 0; i < strlen(fen); i++){
         if(p == 'p'){
             if(index+9  == i && getPiece(i) == '0') addValidMove(i);
-            // and that pos is not empty and it is not our color
             if(index+8  == i && getPiece(i) != '0' && isWhite(i)) addValidMove(i);
             if(index+10 == i && getPiece(i) != '0' && isWhite(i)) addValidMove(i);
         }
@@ -26,6 +32,10 @@ void setValidMoves(int index){
             if(index-9  == i && getPiece(i) == '0') addValidMove(i);
             if(index-8  == i && getPiece(i) != '0' && !isWhite(i)) addValidMove(i);
             if(index-10 == i && getPiece(i) != '0' && !isWhite(i)) addValidMove(i);
+        }
+        if(p == 'Q'){
+            if(row(i)    ==    row(index) && getPiece(i) == '0') addValidMove(i);
+            if(column(i) == column(index) && getPiece(i) == '0') addValidMove(i);
         }
     }
 }
