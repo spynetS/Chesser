@@ -9,7 +9,10 @@ extern int selected;
 void setValidMoves(int index);
 void setSelected(int index);
 void move(int from, int to);
+void checkHor(int index);
+void checkVert(int index);
 
+int isSameColor(int index, int index2);
 char getTurn();
 
 char getColor(int index);

@@ -5,7 +5,7 @@
 #include<ctype.h>
 
 
-char fen[] = "rnbqkbnr/pppppppp/00000000/00000000/00000000/00000000/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+char fen[] = "rnbqkbnr/pppppppp/00000000/Q0000000/00000000/00000000/pPP0PPPP/RNBQKBNR w KQkq - 0 1";
 int validMoves[100];
 int validMoveIndex = 0;
 
@@ -34,12 +34,44 @@ void setValidMoves(int index){
             if(index-10 == i && getPiece(i) != '0' && !isWhite(i)) addValidMove(i);
         }
         if(p == 'Q'){
-            if(row(i)    ==    row(index) && getPiece(i) == '0') addValidMove(i);
-            if(column(i) == column(index) && getPiece(i) == '0') addValidMove(i);
+            checkHor(index);
+            checkVert(index);
         }
     }
 }
 
+void checkVert(int index){
+    for(int i = 1; i < row(index)+1;i++){
+        int pos = index - 9*i;
+        if(getPiece(pos) != '0'){
+            if(!isSameColor(index,pos)) addValidMove(pos);
+            break;
+        }
+        addValidMove(pos);
+    }
+    for(int i = 1; i < 7-row(index);i++){
+        int pos = index + 9*i;
+        if(getPiece(pos) != '0'){
+            if(!isSameColor(index,pos)) addValidMove(pos);
+            break;
+        }
+        addValidMove(pos);
+    }
+}
+void checkHor(int index){
+    for(int i = index-1; i > index-column(index);i--){
+        if(getPiece(i)!='0') break;
+        else addValidMove(i);
+    }
+}
+
+int isSameColor(int index, int index2){
+    //checks if the pieces of the index is both white or both black
+    if((isWhite(index) && isWhite(index2)) ||
+       (!isWhite(index) && !isWhite(index2))) return 1;
+
+    return 0;
+}
 void setSelected(int index){
     selected = index;
     setValidMoves(index);
