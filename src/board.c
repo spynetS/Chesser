@@ -5,7 +5,7 @@
 #include<ctype.h>
 
 
-char fen[] = "rnbqkbnr/pppppppp/00000000/Q0000000/00000000/00000000/pPP0PPPP/RNBQKBNR w KQkq - 0 1";
+char fen[] = "rnbqkbnr/pppppppp/00000000/Q00Q0000/00000000/00000000/pPP0PPPP/RNBQKBNR w KQkq - 0 1";
 int validMoves[100];
 int validMoveIndex = 0;
 
@@ -60,8 +60,20 @@ void checkVert(int index){
 }
 void checkHor(int index){
     for(int i = index-1; i > index-column(index);i--){
-        if(getPiece(i)!='0') break;
-        else addValidMove(i);
+        int pos = i;
+        if(getPiece(pos) != '0'){
+            if(!isSameColor(index,pos)) addValidMove(pos);
+            break;
+        }
+        addValidMove(pos);
+    }
+    for(int i = index+1; i < index+(8-column(index));i++){
+        int pos = i;
+        if(getPiece(pos) != '0'){
+            if(!isSameColor(index,pos)) addValidMove(pos);
+            break;
+        }
+        addValidMove(pos);
     }
 }
 
