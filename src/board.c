@@ -33,10 +33,63 @@ void setValidMoves(int index){
             if(index-8  == i && getPiece(i) != '0' && !isWhite(i)) addValidMove(i);
             if(index-10 == i && getPiece(i) != '0' && !isWhite(i)) addValidMove(i);
         }
-        if(p == 'Q'){
+        if(p == 'Q' || p == 'q'){
+            checkHor(index);
+            checkVert(index);
+            checkDiagonaly(index);
+        }
+        if(p == 'R' || p == 'r'){
             checkHor(index);
             checkVert(index);
         }
+        if(p == 'b' || p == 'B'){
+            checkDiagonaly(index);
+        }
+        if(p == 'n' || p == 'N'){
+            if(index-17  == i && isSameColor(index,i) == 0) addValidMove(i);
+            if(index-19  == i && isSameColor(index,i) == 0) addValidMove(i);
+            if(index-7  == i &&  isSameColor(index,i) == 0) addValidMove(i);
+            if(index-11  == i && isSameColor(index,i) == 0) addValidMove(i);
+        }
+    }
+}
+
+void checkDiagonaly(int index){
+    // down left
+    for(int i = 1; i < 6;i++){
+        int pos = index+(i*8);
+        if(getPiece(pos) != '0'){
+            if(!isSameColor(index,pos)) addValidMove(pos);
+            break;
+        }
+        addValidMove(pos);
+    }
+    // up right
+    for(int i = 1; i < 6;i++){
+        int pos = index-(i*8);
+        if(getPiece(pos) != '0'){
+            if(!isSameColor(index,pos)) addValidMove(pos);
+            break;
+        }
+        addValidMove(pos);
+    }
+    // down right
+    for(int i = 1; i < 6;i++){
+        int pos = index+(i*10);
+        if(getPiece(pos) != '0'){
+            if(!isSameColor(index,pos)) addValidMove(pos);
+            break;
+        }
+        addValidMove(pos);
+    }
+    // up left
+    for(int i = 1; i < 6;i++){
+        int pos = index-(i*10);
+        if(getPiece(pos) != '0'){
+            if(!isSameColor(index,pos)) addValidMove(pos);
+            break;
+        }
+        addValidMove(pos);
     }
 }
 

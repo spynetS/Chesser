@@ -11,6 +11,7 @@ void setSelected(int index);
 void move(int from, int to);
 void checkHor(int index);
 void checkVert(int index);
+void checkDiagonaly(int index);
 
 int isSameColor(int index, int index2);
 char getTurn();
