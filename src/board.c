@@ -5,7 +5,7 @@
 #include<ctype.h>
 
 
-char fen[] = "rnbqkbnr/pppppppp/00000000/Q00Q0000/00000000/00000000/pPP0PPPP/RNBQKBNR w KQkq - 0 1";
+char fen[] = "rnbqkbnr/pppppppp/00000000/000N0000/00000000/00000000/pPP0PPPP/RNBQKBNR w KQkq - 0 1";
 int validMoves[100];
 int validMoveIndex = 0;
 
@@ -50,6 +50,11 @@ void setValidMoves(int index){
             if(index-19  == i && isSameColor(index,i) == 0) addValidMove(i);
             if(index-7  == i &&  isSameColor(index,i) == 0) addValidMove(i);
             if(index-11  == i && isSameColor(index,i) == 0) addValidMove(i);
+
+            if(index+17  == i && isSameColor(index,i) == 0) addValidMove(i);
+            if(index+19  == i && isSameColor(index,i) == 0) addValidMove(i);
+            if(index+7  == i &&  isSameColor(index,i) == 0) addValidMove(i);
+            if(index+11  == i && isSameColor(index,i) == 0) addValidMove(i);
         }
     }
 }
